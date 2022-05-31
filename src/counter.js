@@ -25,6 +25,8 @@ function useCounter({
 
 const identity = (x) => x;
 
+const xor = (a, b) => (a || b) && !(a && b);
+
 function Counter({
   value: controlledValue,
   onIncrement,
@@ -33,7 +35,7 @@ function Counter({
   step = 1,
   render = identity,
 }) {
-  if ((controlledValue && !onIncrement) || (!controlledValue && onIncrement)) {
+  if (xor(controlledValue, onIncrement)) {
     console.warn("`value` or `onIncrement` not provided");
   }
   const { value, increment } = useCounter({ initialValue, max, step });

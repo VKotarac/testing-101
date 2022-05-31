@@ -70,52 +70,56 @@ describe("useCounter({ initialValue, max, step })", () => {
 describe("<Counter />", () => {
   it("renders a `button`", () => {
     render(<Counter />);
-    expect(screen.getByRole("button")).toHaveValue("0");
-    expect(screen.getByRole("button")).toHaveTextContent("0");
+    const button = screen.getByRole("button");
+    expect(button).toHaveValue("0");
+    expect(button).toHaveTextContent("0");
   });
 
   it("counts up when clicked", () => {
     render(<Counter />);
-    fireEvent.click(screen.getByRole("button"));
-    expect(screen.getByRole("button")).toHaveValue("1");
-    expect(screen.getByRole("button")).toHaveTextContent("1");
+    const button = screen.getByRole("button");
+    fireEvent.click(button);
+    expect(button).toHaveValue("1");
+    expect(button).toHaveTextContent("1");
   });
 
   it("uses initial value if given", () => {
     const initialValue = 3;
     render(<Counter initialValue={initialValue} />);
-    expect(screen.getByRole("button")).toHaveValue(initialValue.toString());
-    expect(screen.getByRole("button")).toHaveTextContent(
-      initialValue.toString()
-    );
+    const button = screen.getByRole("button");
+    expect(button).toHaveValue(initialValue.toString());
+    expect(button).toHaveTextContent(initialValue.toString());
   });
 
   it("respects the max value if given", () => {
     const max = 1;
     render(<Counter max={max} />);
-    fireEvent.click(screen.getByRole("button"));
-    fireEvent.click(screen.getByRole("button"));
-    fireEvent.click(screen.getByRole("button"));
-    expect(screen.getByRole("button")).toHaveValue(max.toString());
-    expect(screen.getByRole("button")).toHaveTextContent(max.toString());
+    const button = screen.getByRole("button");
+    fireEvent.click(button);
+    fireEvent.click(button);
+    fireEvent.click(button);
+    expect(button).toHaveValue(max.toString());
+    expect(button).toHaveTextContent(max.toString());
   });
 
   it("increments in steps if given", () => {
     const step = 2;
     render(<Counter step={step} />);
-    fireEvent.click(screen.getByRole("button"));
-    fireEvent.click(screen.getByRole("button"));
-    fireEvent.click(screen.getByRole("button"));
-    expect(screen.getByRole("button")).toHaveValue("6");
-    expect(screen.getByRole("button")).toHaveTextContent("6");
+    const button = screen.getByRole("button");
+    fireEvent.click(button);
+    fireEvent.click(button);
+    fireEvent.click(button);
+    expect(button).toHaveValue("6");
+    expect(button).toHaveTextContent("6");
   });
 
   it("uses custom render if given", () => {
     render(<Counter render={(value) => `Current count is ${value}`} />);
-    expect(screen.getByRole("button")).toHaveValue("0");
-    expect(screen.getByRole("button")).toHaveTextContent(`Current count is 0`);
-    fireEvent.click(screen.getByRole("button"));
-    expect(screen.getByRole("button")).toHaveValue("1");
+    const button = screen.getByRole("button");
+    expect(button).toHaveValue("0");
+    expect(button).toHaveTextContent(`Current count is 0`);
+    fireEvent.click(button);
+    expect(button).toHaveValue("1");
     expect(screen.getByRole("button")).toHaveTextContent(`Current count is 1`);
   });
 
@@ -123,9 +127,10 @@ describe("<Counter />", () => {
     const increment = jest.fn();
     const value = 13;
     render(<Counter value={value} onIncrement={increment} />);
-    expect(screen.getByRole("button")).toHaveValue(value.toString());
-    expect(screen.getByRole("button")).toHaveTextContent(value.toString());
-    fireEvent.click(screen.getByRole("button"));
+    const button = screen.getByRole("button");
+    expect(button).toHaveValue(value.toString());
+    expect(button).toHaveTextContent(value.toString());
+    fireEvent.click(button);
     expect(increment).toBeCalledTimes(1);
     expect(increment).toHaveBeenCalledWith(value + 1);
   });
@@ -135,7 +140,8 @@ describe("<Counter />", () => {
     const value = 1;
     const step = 2;
     render(<Counter value={value} onIncrement={increment} step={step} />);
-    fireEvent.click(screen.getByRole("button"));
+    const button = screen.getByRole("button");
+    fireEvent.click(button);
     expect(increment).toBeCalledTimes(1);
     expect(increment).toHaveBeenCalledWith(value + step);
   });
@@ -145,13 +151,15 @@ describe("<Counter />", () => {
     const value = 2;
     const max = 2;
     render(<Counter value={value} onIncrement={increment} max={max} />);
-    fireEvent.click(screen.getByRole("button"));
+    const button = screen.getByRole("button");
+    fireEvent.click(button);
     expect(increment).toBeCalledTimes(1);
     expect(increment).toHaveBeenCalledWith(max);
   });
 
   it("warns in the console if not fully controlled", () => {
     const spy = jest.spyOn(console, "warn");
+    // there is a bug here ;)
     render(<Counter value={1} />);
     expect(spy).toHaveBeenCalledWith("`value` or `onIncrement` not provided");
   });
